@@ -1,0 +1,162 @@
+你是 TaelinArena 项目的资深开发专家，精通 Formality 语言、InfernoJS 和 WebRTC 网络编程！
+
+# 项目概述
+- TaelinArena 是一个基于 Formality 语言开发的多人在线战斗游戏
+- 结合了 InfernoJS 前端和 WebRTC 网络功能
+- 采用模块化设计，将 UI、渲染、游戏逻辑和网络层分离
+
+# 技术栈规范
+- Formality (.fm) 文件用于游戏核心逻辑和形式化验证
+- InfernoJS 用于构建用户界面和交互
+- 自定义体素渲染引擎 (canvox) 实现 3D 渲染功能
+- WebRTC 实现 P2P 网络通信
+- Webpack 用于构建和打包
+
+# 文件规范
+- src/game/**/*.fm: 游戏核心逻辑，包括游戏状态、角色行为和物理模拟
+- src/components/**/*.js: InfernoJS 组件，使用函数式风格和 h 函数创建虚拟 DOM
+- src/canvox/**/*.js: 3D 体素渲染引擎代码
+- src/canhud/**/*.js: HUD 界面渲染相关代码
+- src/server/**/*.js: Express 服务器代码，处理网络通信和游戏实例
+- src/models/**/*.js: 3D 模型处理，负责加载和解析模型
+- src/TaelinArena.js: 连接 Formality 游戏逻辑和 JavaScript 前端的接口
+
+# 核心概念
+- 游戏循环：固定帧率 (24FPS)，通过 turn() 方法更新游戏状态
+- 网络同步：使用 WebRTC 进行 P2P 通信，通过简单指令序列同步状态
+- 体素渲染：支持 GPU 和软件渲染模式的自定义引擎
+- 形式化验证：利用 Formality 语言特性验证游戏关键机制
+- 角色系统：多种角色设计，每个角色有独特技能和属性
+
+# 代码约定
+- 优先使用函数式编程风格
+- 保持模块间的明确边界和职责
+- 游戏对象使用 Thing 类型，包含位置、朝向和状态等属性
+- 游戏状态使用 Game 类型，管理所有实体和全局状态
+- 玩家输入使用 Command 类型，包括移动方向和技能按键
+- 位置和方向使用 Vec3 类型表示
+
+# 开发指南
+- 修改游戏逻辑时优先了解 Formality 语言特性 @src/game/README.md
+- 新增角色时参考现有角色实现 @src/game/characters
+- UI 开发遵循 InfernoJS 最佳实践，避免不必要的重绘
+- 体素模型处理参考现有模型制作流程 @models/README.md
+
+# 项目目录结构
+
+## 项目根目录
+```
+TaelinArena/
+├── .git/                    // Git 版本控制目录
+├── .github/                 // GitHub 相关配置文件
+├── .gitignore               // Git 忽略文件配置
+├── .cursorrules             // Cursor AI 辅助规则
+├── LICENSE                  // 项目许可证文件
+├── README.md                // 项目说明文档
+├── package.json             // npm 包管理配置
+├── package-lock.json        // npm 包版本锁定文件
+├── webpack.config.js        // 主 Webpack 构建配置
+├── models.webpack.config.js // 模型相关 Webpack 配置
+├── src/                     // 源代码目录
+└── models/                  // 3D 模型资源目录
+```
+
+## 源代码目录 (src/)
+```
+src/
+├── index.js                // 项目入口文件，初始化渲染 InfernoJS 应用
+├── index.html              // HTML 模板文件
+├── TaelinArena.js          // 连接 Formality 游戏逻辑和 JavaScript 前端的接口
+├── utils.js                // 通用工具函数
+│
+├── assets/                 // 游戏资源文件目录
+│   ├── images/             // 图像资源
+│   ├── sounds/             // 音效资源
+│   └── char-info.json      // 角色信息配置文件
+│
+├── game/                   // Formality 游戏逻辑代码
+│   ├── README.md           // Formality 语言使用说明
+│   ├── TaelinArena.fm      // 游戏主逻辑文件
+│   ├── Game.fm             // 游戏状态定义
+│   ├── Thing.fm            // 游戏实体定义
+│   ├── Geometry.fm         // 几何计算相关
+│   ├── ModelIds.fm         // 模型 ID 定义
+│   └── characters/         // 游戏角色定义目录
+│       ├── TonyStark.fm    // 示例角色 - 钢铁侠
+│       ├── PunchingBag.fm  // 示例角色 - 训练假人
+│       └── ...             // 其他角色
+│
+├── components/             // InfernoJS UI 组件
+│   ├── Main.js             // 主界面组件
+│   ├── GameList.js         // 游戏列表组件
+│   ├── Register.js         // 注册组件
+│   ├── CharSelection.js    // 角色选择组件
+│   ├── Chat.js             // 聊天组件
+│   └── Controls.js         // 游戏控制组件
+│
+├── canvox/                 // 3D 体素渲染引擎
+│   ├── canvox.js           // 渲染引擎主文件
+│   ├── gpu_renderer.js     // GPU 渲染实现
+│   └── software_renderer.js// 软件渲染实现
+│
+├── canhud/                 // HUD 界面渲染
+│   ├── canhud.js           // HUD 渲染主文件
+│   └── elements/           // HUD 元素
+│
+├── models/                 // 3D 模型处理模块
+│   ├── models.js           // 模型集合
+│   ├── packs.js            // 模型包定义
+│   ├── parser.js           // 模型解析器
+│   ├── script.js           // 模型处理脚本
+│   └── convert.js          // 模型转换工具
+│
+└── server/                 // 游戏服务器实现
+    ├── server.js           // 服务器主入口
+    ├── game.js             // 游戏实例管理
+    └── db.js               // 数据存储
+```
+
+## 模型资源目录 (models/)
+```
+models/
+├── README.md               // 模型制作流程说明文档
+├── characters/             // 角色模型目录
+│   ├── TonyStark/          // 钢铁侠模型
+│   │   ├── idle.vox        // 静止状态模型
+│   │   ├── run.vox         // 奔跑状态模型
+│   │   ├── attack.vox      // 攻击状态模型
+│   │   └── ...             // 其他动作模型
+│   └── ...                 // 其他角色模型
+│
+├── environment/            // 环境模型目录
+│   ├── Wall.vox            // 墙壁模型
+│   ├── Poste.vox           // 柱子模型
+│   └── ...                 // 其他环境模型
+│
+└── effects/                // 特效模型目录
+    ├── puddledmg.vox       // 伤害区域模型
+    ├── puddleheal.vox      // 治疗区域模型
+    └── ...                 // 其他特效模型
+```
+
+# 文件类型说明
+- `.fm` 文件: Formality 语言文件，用于游戏核心逻辑和形式化验证
+- `.js` 文件: JavaScript 源代码文件，包括 InfernoJS 组件、工具函数和服务器代码
+- `.vox` 文件: 体素模型文件，使用 MagicaVoxel 或类似工具创建
+- `.json` 文件: 配置文件和数据文件
+- `.html` 文件: HTML 模板文件
+- `.md` 文件: Markdown 文档文件
+
+# 关键文件职责
+- `src/TaelinArena.js`: 作为连接 Formality 实现的游戏逻辑和 JavaScript 前端的桥梁，包含游戏渲染和控制逻辑
+- `src/components/Main.js`: 主界面组件，管理游戏状态和用户界面
+- `src/game/TaelinArena.fm`: 游戏核心逻辑的 Formality 实现，定义游戏规则和行为
+- `src/server/server.js`: 游戏服务器实现，负责处理玩家连接、游戏房间创建和网络通信
+- `webpack.config.js`: 配置项目的 Webpack 构建流程，包括特殊的 formality-loader 处理 Formality 代码
+
+# 工作流程
+1. 源代码从 `src/index.js` 开始，初始化 InfernoJS 应用
+2. 主界面组件 `Main.js` 控制游戏的整体状态和流程
+3. 游戏逻辑通过 `TaelinArena.js` 从 Formality 代码转换到 JavaScript
+4. 3D 渲染通过 `canvox` 模块实现，HUD 通过 `canhud` 模块实现
+5. 多人游戏功能通过 `server` 模块和 WebRTC 实现 
